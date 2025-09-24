@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AmplicodeDatabaseMigrationSettings" lastSelectedDirectory="db/changelog/#date(&quot;yyyy&quot;)/#date(&quot;MM&quot;)" liquibaseFileType="YAML" />
+  <component name="AmplicodePersistenceUnitSettings">
+    <persistence-units>
+      <persistence-unit moduleName="Account_Processing" name="Default">
+        <packages>
+          <package value="com.example.account_processing" />
+        </packages>
+      </persistence-unit>
+      <persistence-unit moduleName="Client_Processing" name="Default">
+        <packages>
+          <package value="com.example.client_processing" />
+        </packages>
+      </persistence-unit>
+      <persistence-unit moduleName="Credit_Processing" name="Default">
+        <packages>
+          <package value="com.example.credit_processing" />
+        </packages>
+      </persistence-unit>
+      <persistence-unit moduleName="T1" name="Default">
+        <packages>
+          <package value="com.example.t1" />
+        </packages>
+      </persistence-unit>
+    </persistence-units>
+  </component>
+</project>
