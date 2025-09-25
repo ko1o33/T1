@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,19 +26,20 @@ public class ClientProduct {
     public Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id")
+    @JoinColumn
     public Client client;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn
     private Product product;
 
     @Column(name = "open_date" ,nullable = false, length = 128)
-    private Date openDate;
+    private LocalDate openDate;
 
     @Column(name = "close_date" ,nullable = false, length = 128)
-    private Date closeDate;
+    private LocalDate closeDate;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 128)
     private StatusList status;
 }

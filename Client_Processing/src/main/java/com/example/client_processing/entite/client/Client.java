@@ -1,12 +1,14 @@
 package com.example.client_processing.entite.client;
 
 import com.example.client_processing.entite.clientProduct.ClientProduct;
+import com.example.client_processing.entite.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -25,8 +27,9 @@ public class Client {
     @Column(name = "client_id", nullable = false, length = 128, unique = true)
     private String clientId ;
 
-    @Column(name = "user_id" ,nullable = false, length = 128, unique = true)
-    private String userId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User userId;
 
     @Column(name = "first_name" ,nullable = false, length = 128)
     private String firstName;
@@ -38,8 +41,9 @@ public class Client {
     private String lastName;
 
     @Column(name = "date_of_birth" ,nullable = false, length = 128)
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "document_type" ,nullable = false, length = 128)
     private DocumentTypeList documentType;
 
