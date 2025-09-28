@@ -19,16 +19,16 @@ public class Account {
     private Long id;
 
     @Column(name = "client_id", nullable = false)
-    private Long clientId;
+    private String clientId;
 
     @Column(name = "product_id", nullable = false)
-    private Long productId;
+    private String productId;
 
     @Column(name = "balance", nullable = false)
     private Long balance;
 
     @Column(name = "interest_rate", nullable = false)
-    private String interestRate;
+    private float interestRate;
 
     @Column(name = "is_recalc", nullable = false)
     private boolean isRecalc;

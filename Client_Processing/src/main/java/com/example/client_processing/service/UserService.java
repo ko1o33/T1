@@ -1,27 +1,13 @@
 package com.example.client_processing.service;
 
-import com.example.client_processing.dto.UserRequest;
 import com.example.client_processing.entite.user.User;
-import com.example.client_processing.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
-@Service
-@RequiredArgsConstructor
-public class UserService {
+public interface UserService {
 
-    private final UserRepository userRepository;
+    boolean checkUser(User user);
 
-    public boolean checkUserUser(User user) {
+    boolean userSave(User user);
 
-        return true
-    }
-
-    @Transactional
-    public void userSava(User user) {
-        userRepository.save(user);
-    }
+    User findByLogin(String login,String password);
 
 }

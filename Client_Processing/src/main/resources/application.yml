@@ -1,10 +1,10 @@
 spring:
   flyway:
-    enabled: true
+    enabled: false
     locations: classpath:db/migration
-    baseline-on-migrate: true
+    baseline-on-migrate: false
   datasource:
-    url: jdbc:postgresql://localhost:5432/clientprocessing
+    url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: root
     driver-class-name: org.postgresql.Driver
@@ -14,7 +14,7 @@ spring:
         show_sql: true
         format_sql: true
         hbm2ddl:
-          auto: none
+          auto: update
 logging:
   level:
     root: INFO
