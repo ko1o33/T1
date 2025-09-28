@@ -19,13 +19,13 @@ public class User {
     @Column(name = "user_id")
     private Long  id;
 
-    @Column(nullable = false, length = 128)
+    @Column(nullable = false, length = 128, unique = true)
     private String login;
 
     @Column(nullable = false, length = 128)
     private String password;
 
-    @Column(nullable = false, length = 128)
+    @Column(nullable = false, length = 128,unique = true)
     private String email;
 
 }
