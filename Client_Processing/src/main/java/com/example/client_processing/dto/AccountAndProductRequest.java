@@ -4,25 +4,26 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Value;
 
 @Value
-public class AccountRequest {
+public class AccountAndProductRequest {
+
     @NotNull
     String clientId;
 
-    @NotNull
     String productId;
 
-    @NotNull
+    Long accountId;
+
+    Long amount;
+
     Long balance;
 
-    @NotNull
+    Long monthCount;
+
     float interestRate;
 
-    @NotNull
     Boolean isRecalc;
 
-    @NotNull
     Boolean cardExist;
 
-    @NotNull
     String status;
 }

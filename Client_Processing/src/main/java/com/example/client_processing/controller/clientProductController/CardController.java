@@ -1,6 +1,5 @@
 package com.example.client_processing.controller.clientProductController;
 
-import com.example.client_processing.dto.AccountRequest;
 import com.example.client_processing.dto.CardRequest;
 import com.example.client_processing.kafka.KafkaProducer;
 import com.fasterxml.jackson.databind.ObjectMapper;

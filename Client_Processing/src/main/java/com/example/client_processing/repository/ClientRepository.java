@@ -16,4 +16,6 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
     Optional<Client> getByUserId(User user);
 
+    Optional<Client> getByClientId(String clientId);
+
 }

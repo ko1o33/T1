@@ -28,10 +28,13 @@ public class ProductRegistry {
     private Long accountId;
 
     @Column(name = "product_id", nullable = false)
-    private Long productId;
+    private String productId;
+
+    @Column(name = "month_count", nullable = false)
+    private Long monthCount;
 
     @Column(name = "interest_rate", nullable = false)
-    private boolean interestRate;
+    private float interestRate;
 
     @Column(name = "open_date", nullable = false)
     private LocalDate openDate;

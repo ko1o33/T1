@@ -24,7 +24,7 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "client_id", nullable = false, length = 12, unique = true)
+    @Column(name = "client_id", nullable = false, unique = true)
     private String clientId ;
 
     @OneToOne(cascade = CascadeType.ALL)

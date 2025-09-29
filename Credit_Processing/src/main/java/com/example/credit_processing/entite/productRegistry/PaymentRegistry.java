@@ -26,7 +26,7 @@ public class PaymentRegistry {
     @JoinColumn
     private ProductRegistry productRegistry;
 
-    @Column(name = "paymend_date", nullable = false)
+    @Column(name = "paymend_date")
     private LocalDate paymendDate;
 
     @Column(name = "amount", nullable = false)
