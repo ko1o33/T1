@@ -7,12 +7,15 @@ import com.example.account_processing.entite.transaction.Transaction;
 import com.example.account_processing.entite.transaction.TypeList;
 import com.example.account_processing.repository.AccountRepository;
 import com.example.account_processing.repository.CardRepository;
+import com.example.account_processing.repository.TransactionRepository;
 import com.example.account_processing.service.AccountService;
 import com.example.account_processing.service.TransactionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +25,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final ObjectMapper objectMapper;
     private final AccountRepository accountRepository;
     private final CardRepository cardRepository;
+    private final TransactionRepository transactionRepository;
 
     public void createTransaction(String json) {
         try {
@@ -32,8 +36,9 @@ public class TransactionServiceImpl implements TransactionService {
                     .account(accountRepository.getById(transactionRequest.getAccountId()))
                     .card(cardRepository.getByCardId(transactionRequest.getCardId()))
                     .status(StatusList.valueOf(transactionRequest.getStatus()))
-                    .timestamp(Lo)
+                    .timestamp(LocalDate.now())
                     .build();
+            transactionRepository.save(transaction);
         }catch (Exception e){
             log.info(e.getMessage());
         }
