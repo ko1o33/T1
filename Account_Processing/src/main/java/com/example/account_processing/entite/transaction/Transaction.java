@@ -1,5 +1,6 @@
 package com.example.account_processing.entite.transaction;
 
+import com.example.account_processing.entite.account.Account;
 import com.example.account_processing.entite.card.Card;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,11 +22,12 @@ public class Transaction{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "account_id", nullable = false)
-    private Long accountId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(nullable = false)
     private Card card;
 
     @Enumerated(EnumType.STRING)

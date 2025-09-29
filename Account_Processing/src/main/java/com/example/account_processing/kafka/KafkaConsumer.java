@@ -26,7 +26,11 @@ public class KafkaConsumer {
 
     @KafkaListener(topics = "client_transactions", groupId = "my_consumer")
     public void listenTransactions(String json) {
+        try {
 
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }
     }
 
     @KafkaListener(topics = "client_cards", groupId = "my_consumer")
