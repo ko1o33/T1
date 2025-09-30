@@ -49,6 +49,7 @@ public class ProductRegistryServiceImpl implements ProductRegistryService {
                         .build();
                 productRegistryRepository.save(productRegistry);
                 var listPayment = paymentCalculation.getPayment(product,productRegistry);
+                log.info("сохранеия");
                 paymentRegistryRepository.saveAll(listPayment);
             }else {
                 throw new MyException("Данный client не может получить продукт");
@@ -60,15 +61,21 @@ public class ProductRegistryServiceImpl implements ProductRegistryService {
 
     @Override
     public Long getSumAmount(Long clientId) {
-        Long amount;
+        log.info("вызван getSumAmount");
+        Long amount = 0L;
         var productList = productRegistryRepository.findByClientId(clientId);
-        amount = paymentRegistryRepository.findByProductRegistry(productList);
+        var opAmount = paymentRegistryRepository.findByProductRegistry(productList);
+        if(opAmount.isEmpty()) {
+            return amount;
+        }
+        amount = opAmount.get();
         return amount;
     }
 
     @Override
     public boolean checkClient(ProductRegistryRequest product) {
         try {
+            log.info("вызван checkClient");
             var clientResponse = webClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/client/get")
@@ -88,7 +95,11 @@ public class ProductRegistryServiceImpl implements ProductRegistryService {
 
     @Override
     public boolean checkExpired(ProductRegistryRequest product) {
+        log.info("вызван checkExpired");
         var productEntite = productRegistryRepository.findByClientId(product.getClientId());
+        if(productEntite.isEmpty()) {
+            return false;
+        }
         return paymentRegistryRepository.existsExpired(productEntite);
     }
 

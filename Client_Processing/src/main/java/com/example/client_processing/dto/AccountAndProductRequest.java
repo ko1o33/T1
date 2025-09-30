@@ -3,6 +3,8 @@ package com.example.client_processing.dto;
 import jakarta.validation.constraints.NotNull;
 import lombok.Value;
 
+import java.time.LocalDate;
+
 @Value
 public class AccountAndProductRequest {
 
@@ -24,6 +26,8 @@ public class AccountAndProductRequest {
     Boolean isRecalc;
 
     Boolean cardExist;
+
+    LocalDate openDate;
 
     String status;
 }

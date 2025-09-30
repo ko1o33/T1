@@ -21,15 +21,16 @@ public class PaymentCalculation {
     public List<PaymentRegistry> getPayment(ProductRegistryRequest product, ProductRegistry registry) {
         List<PaymentRegistry> payments = new ArrayList<>();
         Long deposit = getDeposit(product.getAmount(),product.getInterestRate(),product.getMonthCount());
-        for(int i = 0; product.getMonthCount() == i; i++){
+        for(int i = 0; product.getMonthCount() >= i; i++){
             var paymentRegistry = PaymentRegistry.builder()
-                    .amount(product.getAmount()-deposit*i)
-                    .debtAmount(deposit*i)
+                    .amount(deposit)
+                    .debtAmount(-product.getAmount()+deposit*i)
                     .expired(false)
                     .interestRateAmount(product.getInterestRate())
-                    .paymentExpirationDate(LocalDate.now().plusMonths(i+1))
+                    .paymentExpirationDate(LocalDate.now().plusMonths(i))
                     .productRegistry(registry)
                     .build();
+            payments.add(paymentRegistry);
         }
         return payments;
     }

@@ -7,14 +7,14 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PaymentRegistryRepository extends CrudRepository<PaymentRegistry, Long> {
     @Query("SELECT SUM(p.amount) FROM PaymentRegistry p WHERE p.productRegistry IN :productRegistry")
-    Long findByProductRegistry(@Param("productRegistry")List<ProductRegistry> productRegistry);
+    Optional<Long> findByProductRegistry(@Param("productRegistry")List<ProductRegistry> productRegistry);
 
-    @Query("SELECT COUNT(p) > 0 FROM PaymentRegistry p WHERE p.productRegistry.id IN" +
-            " :productIds AND p.expired = true")
-    boolean existsExpired(@Param("productRegistry")List<ProductRegistry> productRegistry);
+    @Query("SELECT COUNT(p) > 0 FROM PaymentRegistry p WHERE p.productRegistry IN :productRegistry AND p.expired = true")
+    boolean existsExpired(@Param("productRegistry")List<ProductRegistry> products);
 
 
 }
