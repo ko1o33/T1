@@ -13,7 +13,7 @@ public class KafkaConsumer {
 
     private final ProductRegistryService productRegistryService;
 
-    @KafkaListener(topics = "client_credit_products", groupId = "my_consumer")
+    @KafkaListener(topics = "client_credit_products")
     public void listen(String json) {
         try {
             productRegistryService.createProduct(json);

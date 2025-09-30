@@ -9,4 +9,6 @@ public interface AccountRepository extends CrudRepository<Account, String> {
 
     Account getById(Long id);
 
+    void updateAmount(Long amount);
+
 }
