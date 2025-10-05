@@ -1,10 +1,11 @@
 package com.example.account_processing.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Value;
 
-import java.time.LocalDate;
 
 @Value
+@JsonDeserialize
 public class TransactionRequest {
     Long accountId;
     String cardId;
@@ -12,5 +13,4 @@ public class TransactionRequest {
     String type;
     Long amount;
     String status;
-    LocalDate timestamp;
 }

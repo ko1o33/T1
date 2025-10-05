@@ -1,12 +1,10 @@
 package com.example.account_processing.entite.payment;
 
 public enum TypeList {
-    DEPOSIT,        // Внесение наличных (isCredit = true)
-    WITHDRAWAL,     // Снятие наличных (isCredit = false)
+    DEPOSIT,        // Внесение наличных
+    WITHDRAWAL,     // Снятие наличных
+    LOAN_PAYMENT,   // Платеж по кредиту
     TRANSFER,       // Перевод между счетами
-    PAYMENT,        // Платеж за услуги (ЖКХ, интернет)
-    FEE,            // Комиссия банка (isCredit = false)
-    INTEREST,       // Начисление процентов (isCredit = true)
-    REFUND,         // Возврат средств (isCredit = true)
-    LOAN_PAYMENT    // Платеж по кредиту
+    CREATED,        //Был создан
+    EXPIRED         // Ожидание
 }
