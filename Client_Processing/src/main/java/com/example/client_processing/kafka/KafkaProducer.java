@@ -13,13 +13,11 @@ import java.util.UUID;
 @Component
 public class KafkaProducer {
 
-    public final KafkaTemplate<String,String> template;
-    public final ObjectMapper mapper;
+    public final KafkaTemplate<String,Object> template;
 
     public void sendTo(String topic, Object o) {
         try {
-            String json = mapper.writeValueAsString(o);
-            template.send(topic, UUID.randomUUID().toString() ,json);
+            template.send(topic, UUID.randomUUID().toString() ,o);
         }catch (Exception e){
             log.error(e.getMessage());
         }
@@ -27,5 +25,4 @@ public class KafkaProducer {
             template.flush();
         }
     }
-
 }

@@ -38,7 +38,6 @@ public class KafkaConsumer {
                                    @Header(KafkaHeaders.RECEIVED_KEY) String key) {
         log.info("Received transaction. Key: {}, Event: {}", key, json);
         try {
-            System.out.println("ddd");
             var transactionRequest = objectMapper.readValue(json, TransactionRequest.class);
             if(transactionRequest.getAccountId().equals(transactionRequest.getAccountId())) {}
             transactionService.createTransaction(transactionRequest);

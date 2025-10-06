@@ -25,7 +25,7 @@ public class TransactionController {
     @PostMapping("/create")
     public ResponseEntity<?> createTransaction(@Valid @RequestBody TransactionRequest transactionRequest){
         try {
-            kafkaProducer.sendTo("client_transactions", objectMapper.writeValueAsString(transactionRequest));
+            kafkaProducer.sendTo("client_transactions", transactionRequest);
             return ResponseEntity.ok().build();
         }catch (Exception e){
             log.info(e.getMessage());
