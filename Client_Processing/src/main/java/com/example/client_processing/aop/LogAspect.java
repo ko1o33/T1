@@ -6,6 +6,7 @@ import com.example.client_processing.dto.LogError;
 import com.example.client_processing.entite.LogErrorEntity;
 import com.example.client_processing.kafka.KafkaProducer;
 import com.example.client_processing.repository.LogErrorRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -27,6 +28,7 @@ public class LogAspect {
 
     private final KafkaProducer kafkaProducer;
     private final LogErrorRepository logErrorRepository;
+    private final ObjectMapper objectMapper;
 
     @AfterThrowing(pointcut = "@annotation(logDatasourceError)",
             throwing = "e")
@@ -45,7 +47,7 @@ public class LogAspect {
                     .stackTrace(printWriter.toString())
                     .methodSignature(joinPoint.getSignature().toString())
                     .exceptionMessage(e.getMessage())
-                    .inputParameters(joinPoint.getArgs().toString())
+                    .inputParameters(objectMapper.writeValueAsString(joinPoint.getArgs()))
                     .build();
             kafkaProducer.sendWithHeadersTo("service_logs", key, log, headers);
         }catch (Exception ex){

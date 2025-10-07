@@ -1,7 +1,6 @@
 package com.example.client_processing.util.mapper;
 
 import com.example.client_processing.dto.ClientRequest;
-import com.example.client_processing.dto.ClientResponse;
 import com.example.client_processing.entite.client.Client;
 import com.example.client_processing.entite.client.DocumentTypeList;
 import com.example.client_processing.entite.user.User;
@@ -36,7 +35,4 @@ public class ClientMapper {
         return client;
     }
 
-    public ClientResponse mapToClientResponse() {
-        return new ClientResponse();
-    }
 }

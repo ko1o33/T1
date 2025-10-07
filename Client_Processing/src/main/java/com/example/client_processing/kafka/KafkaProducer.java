@@ -1,5 +1,7 @@
 package com.example.client_processing.kafka;
 
+import com.example.client_processing.aop.TypeError;
+import com.example.client_processing.aop.annotation.LogDatasourceError;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

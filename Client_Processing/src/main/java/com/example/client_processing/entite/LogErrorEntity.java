@@ -25,5 +25,5 @@ public class LogErrorEntity {
 
     private String exceptionMessage;
 
-    private Object inputParameters;
+    private String inputParameters;
 }
