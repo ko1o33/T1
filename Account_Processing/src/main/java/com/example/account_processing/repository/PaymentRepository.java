@@ -25,5 +25,9 @@ public interface PaymentRepository extends CrudRepository<Payment, String> {
     @Query("UPDATE Payment p SET p.type = ?1 WHERE p.id = ?2")
     void updatePayment(String type,Long Id);
 
+    @Query("SELECT p FROM Payment p " +
+            "WHERE p.accountId = :account_id AND p.type IN ('LOAN_PAYMENT', 'EXPIRED')")
+    List<Payment> findByAccountId(@Param("account_id")Long accountId);
+
     List<Payment> findByPaymentDate(LocalDate date);
 }

@@ -1,9 +1,11 @@
 package com.example.account_processing.kafka;
 
+import com.example.account_processing.dto.PaymentDto;
 import com.example.account_processing.dto.TransactionRequest;
 import com.example.account_processing.repository.TransactionRepository;
 import com.example.account_processing.service.AccountService;
 import com.example.account_processing.service.CardService;
+import com.example.account_processing.service.PaymentService;
 import com.example.account_processing.service.TransactionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class KafkaConsumer {
     private final CardService cardService;
     private final TransactionService transactionService;
     private final ObjectMapper objectMapper;
+    private final PaymentService paymentService;
 
     @KafkaListener(topics = "client_products", groupId = "create-account")
     public void listenAccount(String json) {
@@ -50,6 +53,18 @@ public class KafkaConsumer {
     public void listenCards(String json) {
         try {
             cardService.createCard(json);
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }
+    }
+
+    @KafkaListener(topics = "client_payments", groupId = "my_consumer")
+    public void listenPayment(String json,
+                              @Header(KafkaHeaders.RECEIVED_KEY) String key) {
+        log.info("Received payments. Key: {}, Event: {}", key, json);
+        try {
+            var payment = objectMapper.readValue(json, PaymentDto.class);
+            paymentService.paymentCredit(payment);
         }catch (Exception e){
             log.error(e.getMessage());
         }
