@@ -8,7 +8,5 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface HttpIncomeRequestLog {
     TypeError type() default TypeError.INFO;
-    String value();
-    String service() ;
-    String url();
+    String service() default "" ;
 }

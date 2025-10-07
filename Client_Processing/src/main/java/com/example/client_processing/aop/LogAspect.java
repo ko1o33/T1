@@ -7,15 +7,20 @@ import com.example.client_processing.entite.LogErrorEntity;
 import com.example.client_processing.kafka.KafkaProducer;
 import com.example.client_processing.repository.LogErrorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+
+import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,5 +67,4 @@ public class LogAspect {
             log.error(ex.getMessage(),ex + "message: "+ logBD);
         }
     }
-
 }
