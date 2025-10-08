@@ -32,7 +32,6 @@ import java.util.Map;
 public class HttpLogAspect {
 
     private final KafkaProducer kafkaProducer;
-    private final LogErrorRepository logErrorRepository;
     private final ObjectMapper objectMapper;
 
     @AfterReturning(value = "@annotation(httpOutcomeRequestLog)")

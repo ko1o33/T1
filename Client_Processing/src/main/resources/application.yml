@@ -27,3 +27,5 @@ logging:
     name: log
 server:
   port: 8081
+value:
+  limitTime: 20000
