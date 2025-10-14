@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +22,16 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
+
     private final JwtTokenUtils jwtTokenUtils;
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String uri = request.getRequestURI();
+        return uri.equals("/authentication") ||
+                uri.startsWith("/client/get") ||
+                uri.equals("/user/create");
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -35,6 +45,7 @@ public class JwtFilter extends OncePerRequestFilter {
             jwt = header.substring(7);
             try {
                 username = jwtTokenUtils.getUsernameFromToken(jwt);
+                jwtTokenUtils.getRoleFromToken(jwt);
             } catch (ExpiredJwtException d) {
                 log.debug("Время жизни вышло");
             } catch (SignatureException e) {
@@ -47,6 +58,12 @@ public class JwtFilter extends OncePerRequestFilter {
                             .map(SimpleGrantedAuthority::new)
                             .toList());
             SecurityContextHolder.getContext().setAuthentication(token);
+        }
+        if (jwtTokenUtils.getRoleFromToken(jwt).getFirst().equals("ROLE_BLOCKED_CLIENT")) {
+            log.info("This user {} has blocked ",jwtTokenUtils.getUsernameFromToken(jwt));
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.getWriter().write("This user is BLOCKED_CLIENT");
+            return;
         }
         filterChain.doFilter(request, response);
     }

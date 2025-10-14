@@ -6,6 +6,7 @@ import com.example.client_processing.service.impl.CreateUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -39,8 +40,9 @@ public class SecurityConfig {
                         .requestMatchers("/product/create").hasRole("MASTER")
                         .requestMatchers("/product/delete").hasAnyRole("MASTER","GRAND_EMPLOYEE")
                         .requestMatchers("/product/patch").hasAnyRole("MASTER","GRAND_EMPLOYEE")
-                        .requestMatchers("/authentication").permitAll()
-                        .requestMatchers("/user/create").permitAll()
+                        .requestMatchers("/authentication").anonymous()
+                        .requestMatchers("/client/get").anonymous()
+                        .requestMatchers("/user/create").anonymous()
                         .anyRequest().authenticated())
                 .sessionManagement(con -> con
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
