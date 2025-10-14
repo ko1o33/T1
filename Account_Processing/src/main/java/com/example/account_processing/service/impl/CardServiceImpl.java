@@ -24,16 +24,23 @@ public class CardServiceImpl implements CardService {
     @Override
     public void createCard(String json) {
         try {
+            log.info("Create card: " + json);
             var cardRequest = objectMapper.readValue(json, CardRequest.class);
-            var card = Card.builder()
-                    .cardId(cardRequest.getCardId())
-                    .paymentSystem(cardRequest.getPaymentSystem())
-                    .status(StatusList.valueOf(cardRequest.getStatus()))
-                    .account(accountRepository.getById(cardRequest.getAccountId()))
-                            .build();
-            cardRepository.save(card);
-        }catch (Exception e){
-            log.info(e.getMessage());
+            var account = accountRepository.getById(cardRequest.getAccountId());
+            if (account.getStatus() != com.example.account_processing.entite.account.StatusList.BLOCKED) {
+                var card = Card.builder()
+                        .cardId(cardRequest.getCardId())
+                        .paymentSystem(cardRequest.getPaymentSystem())
+                        .status(StatusList.valueOf(cardRequest.getStatus()))
+                        .account(account)
+                        .build();
+                cardRepository.save(card);
+                log.info("Card created id : " + card.getId());
+            } else {
+                log.info("This account has BLOCKED");
+            }
+        } catch (Exception e) {
+            log.info("При создание card произошла ошибк " + e.getMessage());
         }
     }
 }

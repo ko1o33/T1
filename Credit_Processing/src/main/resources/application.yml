@@ -27,3 +27,5 @@ server:
   port: 8083
 product:
   limit: 300000
+value:
+  limitTime: 300000

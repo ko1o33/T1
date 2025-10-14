@@ -11,10 +11,10 @@ import java.util.Optional;
 
 public interface PaymentRegistryRepository extends CrudRepository<PaymentRegistry, Long> {
     @Query("SELECT SUM(p.amount) FROM PaymentRegistry p WHERE p.productRegistry IN :productRegistry")
-    Optional<Long> findByProductRegistry(@Param("productRegistry")List<ProductRegistry> productRegistry);
+    Optional<Long> findByProductRegistry(@Param("productRegistry") List<ProductRegistry> productRegistry);
 
     @Query("SELECT COUNT(p) > 0 FROM PaymentRegistry p WHERE p.productRegistry IN :productRegistry AND p.expired = true")
-    boolean existsExpired(@Param("productRegistry")List<ProductRegistry> products);
+    boolean existsExpired(@Param("productRegistry") List<ProductRegistry> products);
 
 
 }

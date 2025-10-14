@@ -27,19 +27,20 @@ public class PaymentServiceImpl implements PaymentService {
     private final AccountRepository accountRepository;
 
     @Transactional
-    public void checkPayment(){
+    public void checkPayment() {
         try {
             var payments = paymentRepository.findByPaymentDate(LocalDate.now());
             payments.forEach(payment -> {
                 var account = accountRepository.getById(payment.getAccountId());
-                if(account.getBalance()>payment.getAmount()){
-                    accountRepository.updateAccountAmount(account.getBalance()-payment.getAmount(),account.getId());
+                if (account.getBalance() > payment.getAmount()) {
+                    account.setBalance(account.getBalance() - payment.getAmount());
+                    accountRepository.save(account);
                     paymentRepository.updatePayment(TypeList.LOAN_PAYMENT.name(), payment.getId());
-                }else{
+                } else {
                     paymentRepository.updatePayment(TypeList.EXPIRED.name(), payment.getId());
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new MyException(e.getMessage());
         }
     }
@@ -47,19 +48,26 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional
     public void paymentCredit(PaymentDto paymentDto) {
         try {
-            var list = paymentRepository.findByAccountId(paymentDto.getAccountId());
-            Long balance = list.stream()
-                    .map(Payment::getAmount)
-                    .mapToLong(Long::longValue)
-                    .sum();
-            if(balance == paymentDto.getAmount()){
-                list.forEach(payment -> {
-                    payment.setType(TypeList.PAYED_AT);
-                    payment.setPaymentDate(LocalDate.now());
-                    paymentRepository.saveAll(list);
-                });
+            log.info("Payment of the entire loan account {}, in the amount of {}", paymentDto.getAccountId(), paymentDto.getAmount());
+            var list = paymentRepository.findByAccountIdForCredit(paymentDto.getAccountId());
+            if (!list.isEmpty()) {
+                Long balance = list.stream()
+                        .map(Payment::getAmount)
+                        .mapToLong(Long::longValue)
+                        .sum();
+                if (balance.equals(paymentDto.getAmount())) {
+                    list.forEach(payment -> {
+                        payment.setType(TypeList.PAYED_AT);
+                        payment.setPaymentDate(LocalDate.now());
+                        paymentRepository.saveAll(list);
+                    });
+                } else {
+                    log.info("This balance is bigger than the debt");
+                }
+            } else {
+                log.info("This account hasn't credit payment");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             log.info(e.getMessage());
         }
     }

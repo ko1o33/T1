@@ -20,7 +20,7 @@ public class Card {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id",nullable = false)
+    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
     @Column(name = "card_id", nullable = false, unique = true, length = 16)

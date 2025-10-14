@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -17,7 +18,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "transactions")
-public class Transaction{
+public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -42,5 +43,5 @@ public class Transaction{
     private StatusList status;
 
     @Column(name = "timestamp", nullable = false)
-    private LocalDate timestamp;
+    private LocalDateTime timestamp;
 }

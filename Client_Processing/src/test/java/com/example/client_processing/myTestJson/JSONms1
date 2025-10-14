@@ -1,0 +1,15 @@
+для /client/create
+{
+  "regionNumber": "77",
+  "bankNumber": "11",
+  "login": "john_doe",
+  "password": "mySecurePassword123",
+  "firstName": "Иван",
+  "middleName": "Иванович",
+  "lastName": "Иванов",
+  "dateOfBirth": "1990-05-15",
+  "documentType": "PASSPORT",
+  "documentId": "1234567890",
+  "documentPrefix": "4501",
+  "documentSuffix": "123456"
+}

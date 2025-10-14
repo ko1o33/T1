@@ -8,4 +8,6 @@ public interface ProductService {
     Product getProductById(String id);
 
     void deleteProductById(String id);
+
+    Product changeNameToProduct(String name, String product);
 }

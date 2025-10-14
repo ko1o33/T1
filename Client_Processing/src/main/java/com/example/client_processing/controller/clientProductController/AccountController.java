@@ -1,10 +1,12 @@
 package com.example.client_processing.controller.clientProductController;
 
-import com.example.client_processing.dto.AccountAndProductRequest;
+import com.example.client_processing.aop.annotation.HttpIncomeRequestLog;
+import com.example.client_processing.aop.annotation.HttpOutcomeRequestLog;
+import com.example.client_processing.aop.annotation.LogDatasourceError;
+import com.example.client_processing.aop.annotation.Metric;
+import com.example.client_processing.dto.other.AccountAndProductRequest;
 import com.example.client_processing.exception.MyException;
 import com.example.client_processing.kafka.KafkaProducer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,28 +26,32 @@ import java.util.regex.Pattern;
 public class AccountController {
 
     private final KafkaProducer kafkaProducer;
-    private final ObjectMapper objectMapper ;
 
-    private final Set<String> set1 = new HashSet<>(Arrays.asList("DC","CC","NS","PENS"));
-    private final Set<String> set2 = new HashSet<>(Arrays.asList("IPO","PC","AC"));
+    private final Set<String> set1 = new HashSet<>(Arrays.asList("DC", "CC", "NS", "PENS"));
+    private final Set<String> set2 = new HashSet<>(Arrays.asList("IPO", "PC", "AC"));
     private final Pattern pattern = Pattern.compile("([A-Za-z]+)(\\d+)");
 
     @PostMapping("/create")
-    public ResponseEntity<?> accountCreate(@Valid @RequestBody AccountAndProductRequest account) {
+    @LogDatasourceError
+    @Metric
+    @HttpIncomeRequestLog
+    @HttpOutcomeRequestLog
+    public ResponseEntity<?> accountCreate(@RequestBody AccountAndProductRequest account) {
         try {
+            log.info("Creating account {}", account);
             var mather = pattern.matcher(account.getProductId());
             mather.find();
-            if(set1.contains(mather.group(1))) {
-                kafkaProducer.sendTo("client_products",objectMapper.writeValueAsString(account));
-                return ResponseEntity.ok().build();
-            }else if(set2.contains(mather.group(1))) {
-                kafkaProducer.sendTo("client_credit_products",objectMapper.writeValueAsString(account));
-                return ResponseEntity.ok().build();
+            if (set1.contains(mather.group(1))) {
+                kafkaProducer.sendTo("client_products", account);
+                return ResponseEntity.ok("Запрос отправлен в микросервис client_products");
+            } else if (set2.contains(mather.group(1))) {
+                kafkaProducer.sendTo("client_credit_products", account);
+                return ResponseEntity.ok("Запрос отправлен в микросервис client_credit_products");
             }
             throw new MyException("Такой тип продукта запрещен");
-        }catch (Exception e){
+        } catch (Exception e) {
             log.info(e.getMessage());
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Ошибка "+e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Ошибка " + e.getMessage());
         }
     }
 }

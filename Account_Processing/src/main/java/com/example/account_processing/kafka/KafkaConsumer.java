@@ -1,7 +1,10 @@
 package com.example.account_processing.kafka;
 
+import com.example.account_processing.aop.annotation.LogDatasourceError;
+import com.example.account_processing.aop.annotation.Metric;
 import com.example.account_processing.dto.PaymentDto;
 import com.example.account_processing.dto.TransactionRequest;
+import com.example.account_processing.entite.account.Account;
 import com.example.account_processing.repository.TransactionRepository;
 import com.example.account_processing.service.AccountService;
 import com.example.account_processing.service.CardService;
@@ -28,45 +31,54 @@ public class KafkaConsumer {
     private final PaymentService paymentService;
 
     @KafkaListener(topics = "client_products", groupId = "create-account")
-    public void listenAccount(String json) {
+    @LogDatasourceError
+    @Metric
+    public void listenAccount(String json, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
         try {
+            log.info("Получено собщение из топика {} и собхение - {}", topic, json);
             accountService.createAccount(json);
-        }catch (Exception e){
-            log.error(e.getMessage());
+        } catch (Exception e) {
+            log.error("Произошла ошибка в listenAccount " + e.getMessage());
         }
     }
 
     @KafkaListener(topics = "client_transactions", groupId = "my_consumer")
+    @LogDatasourceError
+    @Metric
     public void listenTransactions(String json,
                                    @Header(KafkaHeaders.RECEIVED_KEY) String key) {
         log.info("Received transaction. Key: {}, Event: {}", key, json);
         try {
             var transactionRequest = objectMapper.readValue(json, TransactionRequest.class);
-            if(transactionRequest.getAccountId().equals(transactionRequest.getAccountId())) {}
             transactionService.createTransaction(transactionRequest);
-        }catch (Exception e){
-            log.error(e.getMessage());
+        } catch (Exception e) {
+            log.error("Произошла ошибка в listenTransactions " + e.getMessage());
         }
     }
 
     @KafkaListener(topics = "client_cards", groupId = "my_consumer")
+    @LogDatasourceError
+    @Metric
     public void listenCards(String json) {
         try {
+            log.info("Received transaction. json: {}", json);
             cardService.createCard(json);
-        }catch (Exception e){
-            log.error(e.getMessage());
+        } catch (Exception e) {
+            log.error("Произошла ошибка в listenCards " + e.getMessage());
         }
     }
 
     @KafkaListener(topics = "client_payments", groupId = "my_consumer")
+    @LogDatasourceError
+    @Metric
     public void listenPayment(String json,
                               @Header(KafkaHeaders.RECEIVED_KEY) String key) {
         log.info("Received payments. Key: {}, Event: {}", key, json);
         try {
             var payment = objectMapper.readValue(json, PaymentDto.class);
             paymentService.paymentCredit(payment);
-        }catch (Exception e){
-            log.error(e.getMessage());
+        } catch (Exception e) {
+            log.error("Произошла ошибка в listenPayment " + e.getMessage());
         }
     }
 

@@ -1,6 +1,10 @@
 package com.example.client_processing.controller;
 
-import com.example.client_processing.dto.UserRequest;
+import com.example.client_processing.aop.annotation.HttpIncomeRequestLog;
+import com.example.client_processing.aop.annotation.HttpOutcomeRequestLog;
+import com.example.client_processing.aop.annotation.LogDatasourceError;
+import com.example.client_processing.aop.annotation.Metric;
+import com.example.client_processing.dto.user.UserRequest;
 import com.example.client_processing.service.UserService;
 import com.example.client_processing.exception.UserException;
 import com.example.client_processing.util.mapper.UserMapper;
@@ -25,16 +29,18 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createUser(@Valid @RequestBody UserRequest userRequest) {
+    @LogDatasourceError
+    @Metric
+    @HttpIncomeRequestLog
+    @HttpOutcomeRequestLog
+    public ResponseEntity<?> createUser(@RequestBody UserRequest userRequest) {
+        log.info("Create newUser: {}", userRequest.getLogin());
         var user = userMapper.mapToUser(userRequest);
         try {
-            userService.checkUser(user);
             userService.userSave(user);
-            if(userService.userSave(user)){
-                return ResponseEntity.ok("user создан");
-            }
-            throw new UserException("Произошла ошибка");
-        }catch (UserException e) {
+            return ResponseEntity.ok("user создан");
+        } catch (UserException e) {
+            log.info("UserException: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }

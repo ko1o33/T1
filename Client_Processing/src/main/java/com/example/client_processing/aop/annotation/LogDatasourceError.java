@@ -7,7 +7,9 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LogDatasourceError {
-    TypeError type() default TypeError.ERROR ;
+    TypeError type() default TypeError.ERROR;
+
     String value() default "Error";
-    String service() default "" ;
+
+    String service() default "";
 }

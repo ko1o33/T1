@@ -1,4 +1,4 @@
-package com.example.client_processing.dto;
+package com.example.account_processing.dto.aop;
 
 import lombok.Builder;
 import lombok.Value;

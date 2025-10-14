@@ -1,9 +1,9 @@
 package com.example.credit_processing.service.impl;
 
+import com.example.credit_processing.aop.annotation.HttpIncomeRequestLog;
 import com.example.credit_processing.dto.ClientResponse;
 import com.example.credit_processing.dto.ProductRegistryRequest;
 import com.example.credit_processing.entite.paymentRegistry.ProductRegistry;
-import com.example.credit_processing.exception.MyException;
 import com.example.credit_processing.repository.PaymentRegistryRepository;
 import com.example.credit_processing.repository.ProductRegistryRepository;
 import com.example.credit_processing.service.ProductRegistryService;
@@ -36,8 +36,9 @@ public class ProductRegistryServiceImpl implements ProductRegistryService {
     public void createProduct(String json) {
         try {
             var product = mapper.readValue(json, ProductRegistryRequest.class);
-            if(checkClient(product) &&
-                    getSumAmount(product.getClientId())+ product.getAmount() > limit &&
+            log.info("Start create product "+product.toString());
+            if (checkClient(product) &&
+                    getSumAmount(product.getClientId()) + product.getAmount() > limit &&
                     !checkExpired(product)) {
                 var productRegistry = ProductRegistry.builder()
                         .clientId(product.getClientId())
@@ -48,14 +49,15 @@ public class ProductRegistryServiceImpl implements ProductRegistryService {
                         .productId(product.getProductId())
                         .build();
                 productRegistryRepository.save(productRegistry);
-                var listPayment = paymentCalculation.getPayment(product,productRegistry);
-                log.info("сохранеия");
+                log.info("Save product "+productRegistry.toString());
+                var listPayment = paymentCalculation.getPayment(product, productRegistry);
                 paymentRegistryRepository.saveAll(listPayment);
-            }else {
-                throw new MyException("Данный client не может получить продукт");
+                log.info("Payment list saved ");
+            } else {
+                log.info("Данный client не может получить продукт");
             }
-        }catch (Exception e){
-            log.error(e.getMessage());
+        } catch (Exception e) {
+            log.error("Ошибка при обработке : " + e.getMessage());
         }
     }
 
@@ -65,7 +67,7 @@ public class ProductRegistryServiceImpl implements ProductRegistryService {
         Long amount = 0L;
         var productList = productRegistryRepository.findByClientId(clientId);
         var opAmount = paymentRegistryRepository.findByProductRegistry(productList);
-        if(opAmount.isEmpty()) {
+        if (opAmount.isEmpty()) {
             return amount;
         }
         amount = opAmount.get();
@@ -73,6 +75,7 @@ public class ProductRegistryServiceImpl implements ProductRegistryService {
     }
 
     @Override
+    @HttpIncomeRequestLog
     public boolean checkClient(ProductRegistryRequest product) {
         try {
             log.info("вызван checkClient");
@@ -83,12 +86,14 @@ public class ProductRegistryServiceImpl implements ProductRegistryService {
                             .build())
                     .retrieve()
                     .bodyToMono(ClientResponse.class).block();
-            if(clientResponse != null){
+            if (clientResponse != null) {
+                log.info("Получил client {}", clientResponse);
                 return true;
             }
+            log.info("Не нашел");
             return false;
-        }catch (Exception e){
-            log.error(e.getMessage());
+        } catch (Exception e) {
+            log.error("Ошибка в checkClient : " + e.getMessage());
             return false;
         }
     }
@@ -97,7 +102,7 @@ public class ProductRegistryServiceImpl implements ProductRegistryService {
     public boolean checkExpired(ProductRegistryRequest product) {
         log.info("вызван checkExpired");
         var productEntite = productRegistryRepository.findByClientId(product.getClientId());
-        if(productEntite.isEmpty()) {
+        if (productEntite.isEmpty()) {
             return false;
         }
         return paymentRegistryRepository.existsExpired(productEntite);

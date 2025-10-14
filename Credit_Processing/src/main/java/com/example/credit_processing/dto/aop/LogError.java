@@ -1,9 +1,8 @@
-package com.example.client_processing.dto;
+package com.example.credit_processing.dto.aop;
 
 import lombok.Builder;
 import lombok.Value;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Value

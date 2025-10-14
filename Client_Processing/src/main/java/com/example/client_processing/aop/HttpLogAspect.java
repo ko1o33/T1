@@ -2,15 +2,12 @@ package com.example.client_processing.aop;
 
 import com.example.client_processing.aop.annotation.HttpIncomeRequestLog;
 import com.example.client_processing.aop.annotation.HttpOutcomeRequestLog;
-import com.example.client_processing.dto.HttpRequestLog;
-import com.example.client_processing.dto.LogError;
+import com.example.client_processing.dto.aop.HttpRequestLog;
 import com.example.client_processing.kafka.KafkaProducer;
-import com.example.client_processing.repository.LogErrorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;

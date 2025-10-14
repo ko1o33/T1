@@ -1,4 +1,4 @@
-package com.example.client_processing.entite;
+package com.example.client_processing.entite.aop;
 
 import jakarta.persistence.*;
 import lombok.*;

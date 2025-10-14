@@ -17,7 +17,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long  id;
+    private Long id;
 
     @Column(nullable = false, length = 128, unique = true)
     private String login;
@@ -25,7 +25,10 @@ public class User {
     @Column(nullable = false, length = 128)
     private String password;
 
-    @Column(nullable = false, length = 128,unique = true)
+    @Column(nullable = false, length = 128, unique = true)
     private String email;
+
+    @Enumerated(EnumType.STRING)
+    private RoleList role;
 
 }

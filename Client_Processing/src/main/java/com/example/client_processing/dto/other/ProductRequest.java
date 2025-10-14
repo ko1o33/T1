@@ -1,8 +1,7 @@
-package com.example.client_processing.dto;
+package com.example.client_processing.dto.other;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.Getter;
 import lombok.Value;
 
 @Value

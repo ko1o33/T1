@@ -1,17 +1,18 @@
 package com.example.client_processing.controller.clientProductController;
 
+import com.example.client_processing.aop.annotation.HttpIncomeRequestLog;
+import com.example.client_processing.aop.annotation.HttpOutcomeRequestLog;
 import com.example.client_processing.aop.annotation.LogDatasourceError;
-import com.example.client_processing.dto.CardRequest;
+import com.example.client_processing.aop.annotation.Metric;
+import com.example.client_processing.dto.other.CardRequest;
 import com.example.client_processing.exception.MyException;
 import com.example.client_processing.kafka.KafkaProducer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,19 +21,20 @@ import org.springframework.web.server.ResponseStatusException;
 public class CardController {
 
     private final KafkaProducer kafkaProducer;
-    private final ObjectMapper objectMapper ;
 
     @PostMapping("/create")
     @LogDatasourceError
-    public ResponseEntity<?> createCard(@Valid @RequestBody CardRequest cardRequest){
+    @Metric
+    @HttpIncomeRequestLog
+    @HttpOutcomeRequestLog
+    public ResponseEntity<?> createCard(@Valid @RequestBody CardRequest cardRequest) {
         try {
-            if(true)throw new Exception();
-            kafkaProducer.sendTo("client_cards", objectMapper.writeValueAsString(cardRequest));
+            log.info("Создание card : " + cardRequest);
+            kafkaProducer.sendTo("client_cards", cardRequest);
             return ResponseEntity.ok().build();
-        }catch (Exception e){
-            log.info(e.getMessage());
-            throw new MyException(e.getMessage());
-            //return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            log.error("Ошибка в createCard : " + e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
     }
 

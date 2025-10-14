@@ -1,6 +1,6 @@
 package com.example.client_processing.util.mapper;
 
-import com.example.client_processing.dto.ProductRequest;
+import com.example.client_processing.dto.other.ProductRequest;
 import com.example.client_processing.entite.product.KeyList;
 import com.example.client_processing.entite.product.Product;
 import lombok.RequiredArgsConstructor;

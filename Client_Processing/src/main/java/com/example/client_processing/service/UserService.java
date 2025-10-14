@@ -4,10 +4,8 @@ import com.example.client_processing.entite.user.User;
 
 public interface UserService {
 
-    boolean checkUser(User user);
+    void userSave(User user);
 
-    boolean userSave(User user);
-
-    User findByLogin(String login,String password);
+    User findByLogin(String login, String password);
 
 }

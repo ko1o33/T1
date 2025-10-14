@@ -12,7 +12,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
     @Query(value = "SELECT client_id from clients c where client_id like :prefix% order by client_id DESC limit 1"
             , nativeQuery = true)
-    String findLastClientId (@Param("prefix") String prefix);
+    String findLastClientId(@Param("prefix") String prefix);
 
     Optional<Client> getByUserId(User user);
 

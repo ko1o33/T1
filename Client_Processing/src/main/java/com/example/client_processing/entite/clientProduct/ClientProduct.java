@@ -9,9 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Entity
 @Data
@@ -33,10 +30,10 @@ public class ClientProduct {
     @JoinColumn
     private Product product;
 
-    @Column(name = "open_date" ,nullable = false, length = 128)
+    @Column(name = "open_date", nullable = false, length = 128)
     private LocalDate openDate;
 
-    @Column(name = "close_date" ,nullable = false, length = 128)
+    @Column(name = "close_date", nullable = false, length = 128)
     private LocalDate closeDate;
 
     @Enumerated(EnumType.STRING)

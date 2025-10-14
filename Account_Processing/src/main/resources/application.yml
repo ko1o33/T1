@@ -29,3 +29,4 @@ server:
   port: 8082
 value:
   month: 12
+  limitTime: 300000

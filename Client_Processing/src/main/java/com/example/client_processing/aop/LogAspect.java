@@ -2,25 +2,22 @@ package com.example.client_processing.aop;
 
 
 import com.example.client_processing.aop.annotation.LogDatasourceError;
-import com.example.client_processing.dto.LogError;
-import com.example.client_processing.entite.LogErrorEntity;
+import com.example.client_processing.dto.aop.LogError;
+import com.example.client_processing.entite.aop.LogErrorEntity;
 import com.example.client_processing.kafka.KafkaProducer;
 import com.example.client_processing.repository.LogErrorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.*;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +26,7 @@ import java.util.Map;
 @Component
 @Slf4j
 @RequiredArgsConstructor
+@Data
 public class LogAspect {
 
     private final KafkaProducer kafkaProducer;
@@ -42,6 +40,7 @@ public class LogAspect {
         var stringWriter = new StringWriter();
         var printWriter = new PrintWriter(stringWriter);
         e.printStackTrace(printWriter);
+        printWriter.flush();
         Map<String, String> headers = new HashMap<>();
         headers.put("type", logDatasourceError.type().toString());
         headers.put("value", logDatasourceError.value());
@@ -49,13 +48,13 @@ public class LogAspect {
         try {
             var log = LogError.builder()
                     .timestamp(LocalDateTime.now())
-                    .stackTrace(printWriter.toString())
+                    .stackTrace(stringWriter.toString())
                     .methodSignature(joinPoint.getSignature().toString())
                     .exceptionMessage(e.getMessage())
                     .inputParameters(objectMapper.writeValueAsString(joinPoint.getArgs()))
                     .build();
             kafkaProducer.sendWithHeadersTo("service_logs", key, log, headers);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             var logBD = LogErrorEntity.builder()
                     .timestamp(LocalDateTime.now())
                     .stackTrace(printWriter.toString())
@@ -64,7 +63,7 @@ public class LogAspect {
                     .inputParameters(joinPoint.getArgs().toString())
                     .build();
             logErrorRepository.save(logBD);
-            log.error(ex.getMessage(),ex + "message: "+ logBD);
+            log.error(ex.getMessage(), ex + "message: " + logBD);
         }
     }
 }

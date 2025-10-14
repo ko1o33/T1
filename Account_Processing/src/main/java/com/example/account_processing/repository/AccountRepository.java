@@ -13,12 +13,8 @@ public interface AccountRepository extends CrudRepository<Account, String> {
     Account getById(Long id);
 
     @Modifying
-    @Query("UPDATE Account a SET a.balance = ?1 WHERE a.id = ?2")
-    void updateAccountAmount(Long balance,Long accountId);
-
-    @Modifying
     @Query("UPDATE Account a SET a.status = ?1 WHERE a.id = ?2")
-    void blockAccount(String status,Long accountId);
+    void blockAccount(String status, Long accountId);
 
 
 }

@@ -1,9 +1,11 @@
 package com.example.client_processing.controller.clientProductController;
 
-import com.example.client_processing.dto.CardRequest;
-import com.example.client_processing.dto.TransactionRequest;
+import com.example.client_processing.aop.annotation.HttpIncomeRequestLog;
+import com.example.client_processing.aop.annotation.HttpOutcomeRequestLog;
+import com.example.client_processing.aop.annotation.LogDatasourceError;
+import com.example.client_processing.aop.annotation.Metric;
+import com.example.client_processing.dto.other.TransactionRequest;
 import com.example.client_processing.kafka.KafkaProducer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,15 +22,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class TransactionController {
 
     private final KafkaProducer kafkaProducer;
-    private final ObjectMapper objectMapper ;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createTransaction(@Valid @RequestBody TransactionRequest transactionRequest){
+    @LogDatasourceError
+    @Metric
+    @HttpIncomeRequestLog
+    @HttpOutcomeRequestLog
+    public ResponseEntity<?> createTransaction(@Valid @RequestBody TransactionRequest transactionRequest) {
         try {
+            log.info("Received request to create transaction : {}", transactionRequest);
             kafkaProducer.sendTo("client_transactions", transactionRequest);
             return ResponseEntity.ok().build();
-        }catch (Exception e){
-            log.info(e.getMessage());
+        } catch (Exception e) {
+            log.info("Произошла ошибка " + e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }

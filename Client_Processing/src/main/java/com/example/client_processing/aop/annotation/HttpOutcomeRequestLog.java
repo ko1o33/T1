@@ -8,5 +8,6 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface HttpOutcomeRequestLog {
     TypeError type() default TypeError.INFO;
-    String service() default "" ;
+
+    String service() default "";
 }

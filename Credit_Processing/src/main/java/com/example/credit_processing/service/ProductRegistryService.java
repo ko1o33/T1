@@ -10,7 +10,7 @@ public interface ProductRegistryService {
 
     boolean checkClient(ProductRegistryRequest product);
 
-    boolean checkExpired (ProductRegistryRequest product);
+    boolean checkExpired(ProductRegistryRequest product);
 
 
 }

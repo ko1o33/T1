@@ -27,7 +27,7 @@ public class Product {
     @Column(nullable = false, length = 128)
     private KeyList key;
 
-    @Column(name = "create_date" ,nullable = false)
+    @Column(name = "create_date", nullable = false)
     private LocalDate createDate;
 
     @Column(name = "product_id")

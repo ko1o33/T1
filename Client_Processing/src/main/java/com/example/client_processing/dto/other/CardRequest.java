@@ -1,4 +1,4 @@
-package com.example.client_processing.dto;
+package com.example.client_processing.dto.other;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Value;

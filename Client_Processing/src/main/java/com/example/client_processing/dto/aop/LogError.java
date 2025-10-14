@@ -1,4 +1,4 @@
-package com.example.client_processing.dto;
+package com.example.client_processing.dto.aop;
 
 import lombok.Builder;
 import lombok.Value;
@@ -7,12 +7,15 @@ import java.time.LocalDateTime;
 
 @Value
 @Builder
-public class HttpRequestLog {
+public class LogError {
+
     LocalDateTime timestamp;
 
     String methodSignature;
 
-    String url;
+    String stackTrace;
 
-    Object body;
+    String exceptionMessage;
+
+    Object inputParameters;
 }

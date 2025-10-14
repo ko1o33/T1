@@ -22,8 +22,10 @@ public class AccountServiceImpl implements AccountService {
     public void createAccount(String json) {
         try {
             var account = objectMapper.readValue(json, Account.class);
+            log.info("Собщение обработано {}", account);
             accountRepository.save(account);
-        }catch (Exception e) {
+            log.info("Акаунт сохранен");
+        } catch (Exception e) {
             log.info(e.getMessage());
         }
     }
