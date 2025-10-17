@@ -23,8 +23,8 @@ public class MetricAspect {
     private final ObjectMapper objectMapper;
 
 
-    @Value("${value.limitTime}")
-    private Long limit;
+
+    private Long limit = 0L;
 
     @Around("@annotation(metric)")
     public Object metrics(ProceedingJoinPoint joinPoint, Metric metric) throws Throwable {

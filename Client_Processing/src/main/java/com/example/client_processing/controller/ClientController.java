@@ -1,16 +1,16 @@
 package com.example.client_processing.controller;
 
-import com.example.client_processing.aop.annotation.HttpIncomeRequestLog;
-import com.example.client_processing.aop.annotation.HttpOutcomeRequestLog;
-import com.example.client_processing.aop.annotation.LogDatasourceError;
-import com.example.client_processing.aop.annotation.Metric;
+
+
 import com.example.client_processing.dto.client.ClientRequest;
+import com.example.client_processing.exception.MyException;
 import com.example.client_processing.service.ClientService;
 import com.example.client_processing.service.UserService;
 import com.example.client_processing.util.mapper.ClientMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +48,7 @@ public class ClientController {
     @Metric
     @HttpIncomeRequestLog
     @HttpOutcomeRequestLog
+    @Cached
     public ResponseEntity<?> getClient(@RequestParam String clientId) {
         try {
             log.info("Get client by id: {}", clientId);

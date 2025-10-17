@@ -1,15 +1,16 @@
 package com.example.client_processing.controller;
 
-import com.example.client_processing.aop.annotation.HttpIncomeRequestLog;
-import com.example.client_processing.aop.annotation.HttpOutcomeRequestLog;
-import com.example.client_processing.aop.annotation.LogDatasourceError;
-import com.example.client_processing.aop.annotation.Metric;
+
 import com.example.client_processing.dto.other.ProductRequest;
 import com.example.client_processing.service.ProductService;
 import com.example.client_processing.util.mapper.ProductMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.annotation.HttpIncomeRequestLog;
+import org.example.annotation.HttpOutcomeRequestLog;
+import org.example.annotation.LogDatasourceError;
+import org.example.annotation.Metric;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

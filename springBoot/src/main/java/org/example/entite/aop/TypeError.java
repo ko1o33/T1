@@ -1,4 +1,4 @@
-package com.example.client_processing.aop;
+package org.example.entite.aop;
 
 public enum TypeError {
     ERROR, WARNING, INFO
