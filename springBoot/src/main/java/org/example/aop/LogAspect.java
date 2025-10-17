@@ -12,6 +12,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.example.annotation.LogDatasourceError;
 import org.example.dto.aop.LogError;
 import org.example.entite.aop.LogErrorEntity;
+import org.example.exception.MyException;
 import org.example.kafka.KafkaProducer;
 import org.example.repository.LogErrorRepository;
 import org.springframework.stereotype.Component;
