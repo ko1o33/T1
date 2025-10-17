@@ -1,11 +1,8 @@
 package com.example.account_processing.kafka;
 
-import com.example.account_processing.aop.annotation.LogDatasourceError;
-import com.example.account_processing.aop.annotation.Metric;
+
 import com.example.account_processing.dto.PaymentDto;
 import com.example.account_processing.dto.TransactionRequest;
-import com.example.account_processing.entite.account.Account;
-import com.example.account_processing.repository.TransactionRepository;
 import com.example.account_processing.service.AccountService;
 import com.example.account_processing.service.CardService;
 import com.example.account_processing.service.PaymentService;
@@ -13,10 +10,11 @@ import com.example.account_processing.service.TransactionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.annotation.LogDatasourceError;
+import org.example.annotation.Metric;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 @Service

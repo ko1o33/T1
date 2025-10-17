@@ -1,10 +1,11 @@
 package com.example.credit_processing.kafka;
 
-import com.example.credit_processing.aop.annotation.LogDatasourceError;
-import com.example.credit_processing.aop.annotation.Metric;
+
 import com.example.credit_processing.service.ProductRegistryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.annotation.LogDatasourceError;
+import org.example.annotation.Metric;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package com.example.credit_processing.service.impl;
 
-import com.example.credit_processing.aop.annotation.HttpIncomeRequestLog;
+
 import com.example.credit_processing.dto.ClientResponse;
 import com.example.credit_processing.dto.ProductRegistryRequest;
 import com.example.credit_processing.entite.paymentRegistry.ProductRegistry;
@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.annotation.HttpIncomeRequestLog;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;

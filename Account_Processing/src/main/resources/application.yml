@@ -30,3 +30,12 @@ server:
 value:
   month: 12
   limitTime: 300000
+mystarter:
+  kafka:
+    bootstrap:
+      url: localhost:9092
+  value:
+    logproperty:
+      microserviceName: Account_Processing
+    month: 12
+    TTL: 300000

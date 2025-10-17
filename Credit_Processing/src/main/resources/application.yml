@@ -29,3 +29,12 @@ product:
   limit: 300000
 value:
   limitTime: 300000
+mystarter:
+  kafka:
+    bootstrap:
+      url: localhost:9092
+  value:
+    logproperty:
+      microserviceName: Credit_Processing
+    month: 12
+    TTL: 300000

@@ -3,7 +3,6 @@ package org.example.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.aop.LogAspect;
 import org.example.kafka.KafkaProducer;
-import org.example.service.LogErrorService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;

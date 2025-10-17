@@ -4,7 +4,7 @@ org.example.config.ObjectMapperConfig
 org.example.config.KafkaConfig
 org.example.config.KafkaProducerConfig
 
-org.example.config.LogErrorRepositoryConfig
+
 org.example.config.CachedAspectConfig
 org.example.config.CachedServiceConfig
 org.example.config.HttpLogAspectConfig
